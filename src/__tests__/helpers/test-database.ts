@@ -100,7 +100,7 @@ export const seedTestData = async () => {
       name: 'test-instance',
       token: 'test-token',
       integration: 'WHATSAPP-BAILEYS',
-      status: 'open',
+      connectionStatus: 'open',
       ownerJid: '5511999999999@s.whatsapp.net',
       profileName: 'Test Profile',
       number: '5511999999999',

@@ -38,7 +38,7 @@ describe('SettingsService', () => {
     beforeEach(() => {
       // Mock the instance with setSettings method
       mockWaMonitor.waInstances[instanceDto.instanceName] = {
-        setSettings: jest.fn().mockResolvedValue(void 0),
+        setSettings: jest.fn().mockResolvedValue(undefined),
       };
     });
 

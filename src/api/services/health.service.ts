@@ -107,14 +107,15 @@ export class HealthService {
         system: systemInfo,
       };
 
-      this.logger.debug('Health check completed', {
+      this.logger.debug({
+        message: 'Health check completed',
         status: overallStatus,
         duration: Date.now() - startTime,
       });
 
       return healthStatus;
     } catch (error) {
-      this.logger.error('Health check failed', error);
+      this.logger.error({ message: 'Health check failed', error: error.message });
       
       return {
         status: 'unhealthy',
@@ -149,7 +150,7 @@ export class HealthService {
       // Convert to Prometheus format
       return this.formatPrometheusMetrics(metrics);
     } catch (error) {
-      this.logger.error('Failed to generate metrics', error);
+      this.logger.error({ message: 'Failed to generate metrics', error: error.message });
       throw error;
     }
   }
@@ -168,7 +169,7 @@ export class HealthService {
         responseTime,
       };
     } catch (error) {
-      this.logger.error('Database health check failed', error);
+      this.logger.error({ message: 'Database health check failed', error: error.message });
       
       return {
         status: 'error',
@@ -201,7 +202,7 @@ export class HealthService {
         responseTime,
       };
     } catch (error) {
-      this.logger.error('Redis health check failed', error);
+      this.logger.error({ message: 'Redis health check failed', error: error.message });
       
       return {
         status: 'error',
@@ -230,7 +231,7 @@ export class HealthService {
       
       return { total, active, inactive };
     } catch (error) {
-      this.logger.error('Failed to get instance statistics', error);
+      this.logger.error({ message: 'Failed to get instance statistics', error: error.message });
       return { total: 0, active: 0, inactive: 0 };
     }
   }

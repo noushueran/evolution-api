@@ -19,7 +19,8 @@ export class HealthController {
       // Set appropriate HTTP status code based on health
       const httpStatus = this.getHttpStatusFromHealth(healthStatus.status);
       
-      this.logger.debug('Health check requested', {
+      this.logger.debug({
+        message: 'Health check requested',
         status: healthStatus.status,
         uptime: healthStatus.uptime,
         instances: healthStatus.instances.total,
@@ -27,7 +28,7 @@ export class HealthController {
 
       return response.status(httpStatus).json(healthStatus);
     } catch (error) {
-      this.logger.error('Health check failed', error);
+      this.logger.error({ message: 'Health check failed', error: error.message });
       
       const errorResponse: HealthStatus = {
         status: 'unhealthy',
@@ -74,7 +75,7 @@ export class HealthController {
         });
       }
     } catch (error) {
-      this.logger.error('Readiness check failed', error);
+      this.logger.error({ message: 'Readiness check failed', error: error.message });
       
       return response.status(503).json({
         status: 'not ready',
@@ -106,7 +107,7 @@ export class HealthController {
         timestamp: new Date().toISOString(),
       });
     } catch (error) {
-      this.logger.error('Liveness check failed', error);
+      this.logger.error({ message: 'Liveness check failed', error: error.message });
       
       return response.status(503).json({
         status: 'not alive',
@@ -130,7 +131,7 @@ export class HealthController {
       
       return response.status(200).send(metrics);
     } catch (error) {
-      this.logger.error('Metrics generation failed', error);
+      this.logger.error({ message: 'Metrics generation failed', error: error.message });
       
       return response.status(500).json({
         error: 'Failed to generate metrics',
@@ -158,7 +159,7 @@ export class HealthController {
 
       return response.status(200).json(instanceDetails);
     } catch (error) {
-      this.logger.error('Instance health check failed', error);
+      this.logger.error({ message: 'Instance health check failed', error: error.message });
       
       return response.status(500).json({
         error: 'Failed to get instance health',

@@ -5,6 +5,7 @@ import { ChannelRouter } from '@api/integrations/channel/channel.router';
 import { ChatbotRouter } from '@api/integrations/chatbot/chatbot.router';
 import { EventRouter } from '@api/integrations/event/event.router';
 import { StorageRouter } from '@api/integrations/storage/storage.router';
+import { cache, prismaRepository, waMonitor } from '@api/server.module';
 import { configService } from '@config/env.config';
 import { fetchLatestWaWebVersion } from '@utils/fetchLatestWaWebVersion';
 import { Router } from 'express';
@@ -16,6 +17,7 @@ import { BusinessRouter } from './business.router';
 import { CallRouter } from './call.router';
 import { ChatRouter } from './chat.router';
 import { GroupRouter } from './group.router';
+import { HealthRouter } from './health.router';
 import { InstanceRouter } from './instance.router';
 import { LabelRouter } from './label.router';
 import { ProxyRouter } from './proxy.router';
@@ -57,6 +59,9 @@ router.get('/assets/*', (req, res) => {
     res.status(404).send('File not found');
   }
 });
+
+// Add health router without authentication guards (for monitoring)
+router.use('', new HealthRouter(configService, prismaRepository, cache, waMonitor).router);
 
 router
   .use((req, res, next) => telemetry.collectTelemetry(req, res, next))
